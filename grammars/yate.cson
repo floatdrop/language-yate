@@ -1,0 +1,341 @@
+'fileTypes': [
+  'yate'
+]
+'name': 'Yate'
+'patterns': [
+  {
+    'include': '#block-comments'
+  }
+  {
+    'include': '#block-definition'
+  }
+  {
+    'include': '#match'
+  }
+  {
+    'include': '#include-file'
+  }
+  {
+    'include': '#func'
+  }
+  {
+    'include': '#jpath'
+  }
+  {
+    'include': '#inline-comments'
+  }
+  {
+    'include': '#yate-strings'
+  }
+  {
+    'include': '#yate-strings-single-quoted'
+  }
+  {
+    'include': '#html'
+  }
+  {
+    'include': '#operators'
+  }
+  {
+    'include': '#numeric'
+  }
+]
+'repository':
+  'block-comments':
+    'begin': '/\\*'
+    'end': '\\*/'
+    'name': 'comment.block'
+  'block-definition':
+    'begin': '{'
+    'end': '}'
+    'patterns': [
+      {
+        'include': '#block-comments'
+      }
+      {
+        'include': '#inline-comments'
+      }
+      {
+        'include': '#jpath'
+      }
+      {
+        'include': '#jpath-operators'
+      }
+      {
+        'include': '$self'
+      }
+      {
+        'include': '#operators'
+      }
+      {
+        'include': '#controls'
+      }
+      {
+        'include': '#yate-attributes'
+      }
+    ]
+  'controls':
+    'match': '\\b(if|else|elseif|for|apply)\\b'
+    'name': 'keyword.controls'
+  'func':
+    'begin': '^(?:\\s|\t)*(func|key)(?:\t|\\s)'
+    'beginCaptures':
+      '1':
+        'name': 'storage.type'
+    'end': '(?={)'
+    'name': 'source.yate.func'
+    'patterns': [
+      {
+        'include': '#func-definition'
+      }
+    ]
+  'func-definition':
+    'begin': '(?:([a-zA-Z_$][a-zA-Z_$-0-9]*))(\\s|\\t)*\\('
+    'beginCaptures':
+      '1':
+        'name': 'entity.name.function.js'
+    'end': '\\)'
+    'name': 'source.yate.func.def'
+    'patterns': [
+      {
+        'include': '#block-comments'
+      }
+      {
+        'include': '#inline-comments'
+      }
+      {
+        'match': '(nodeset)\\b'
+        'name': 'constant.numeric'
+      }
+      {
+        'include': '#strings'
+      }
+      {
+        'match': '(?:\\b|\\s|\\t)=(?:\\b|\\s|\\t)'
+        'name': 'keyword.operator'
+      }
+      {
+        'include': '#jpath'
+      }
+      {
+        'include': '#jpath-operators'
+      }
+    ]
+  'html':
+    'begin': '^(\\s|\\t)*(?=<)'
+    'end': '$'
+    'patterns': [
+      {
+        'include': '#block-comments'
+      }
+      {
+        'include': '#inline-comments'
+      }
+      {
+        'include': '#html-definition'
+      }
+      {
+        'include': '#yate-inline-strings'
+      }
+    ]
+  'html-attributes':
+    'begin': '(?=(\\s||\\t))'
+    'end': '(?=((>|/>)))'
+    'name': 'source.yate.html.tag.attribute'
+    'patterns': [
+      {
+        'include': '#block-comments'
+      }
+      {
+        'include': '#inline-comments'
+      }
+      {
+        'include': '#yate-strings'
+      }
+      {
+        'include': '#yate-strings-single-quoted'
+      }
+      {
+        'match': '\\b[a-zA-Z0-9:_-]+\\b'
+        'name': 'entity.other.attribute-name.html'
+      }
+    ]
+  'html-definition':
+    'begin': '(</?)\\s*([-_a-zA-Z0-9]+)'
+    'beginCaptures':
+      '2':
+        'name': 'entity.name.tag.block.any.html'
+    'end': '(/?>)'
+    'endCaptures':
+      '1':
+        'name': 'punctuation.definition.tag.end.html'
+    'name': 'source.yate.html.tag'
+    'patterns': [
+      {
+        'include': '#block-comments'
+      }
+      {
+        'include': '#inline-comments'
+      }
+      {
+        'include': '#html-attributes'
+      }
+    ]
+  'include-file':
+    'match': '\\b(include|import|module|external)\\b'
+    'name': 'storage.type'
+  'inline-comments':
+    'begin': '//'
+    'end': '$'
+    'name': 'comment.line.double-slash'
+  'inline-expression':
+    'begin': '(?<!\\{)({)(?!\\{)'
+    'beginCaptures':
+      '0':
+        'name': 'constant.numeric'
+    'end': '(?<!\\})(})(?!\\})'
+    'endCaptures':
+      '0':
+        'name': 'constant.numeric'
+    'name': 'source.yate.inline-expression'
+    'patterns': [
+      {
+        'include': '#block-comments'
+      }
+      {
+        'include': '#inline-comments'
+      }
+      {
+        'include': '#jpath'
+      }
+      {
+        'include': '#jpath-operators'
+      }
+      {
+        'include': '#operators'
+      }
+      {
+        'include': '#numeric'
+      }
+    ]
+  'jpath':
+    'match': '(?<=\\s|\\t|\\[|\\(|[{,!]|/)(\\.|/)(\\.|[a-zA-Z0-9_-]|\\*|\\$)*(?=\\s|\\t|\\[|\\]|\\)|[,}])'
+    'name': 'variable.parameter'
+  'jpath-operators':
+    'match': '(\\||\\[|\\])'
+    'name': 'constant.numeric'
+  'match':
+    'begin': '^(?:\\s|\\t)*(match)'
+    'beginCaptures':
+      '1':
+        'name': 'storage.type'
+    'end': '(?={)'
+    'name': 'source.yate.match'
+    'patterns': [
+      {
+        'include': '#block-comments'
+      }
+      {
+        'include': '#inline-comments'
+      }
+      {
+        'include': '#jpath'
+      }
+      {
+        'include': '#jpath-operators'
+      }
+      {
+        'include': '#operators'
+      }
+      {
+        'include': '#numeric'
+      }
+      {
+        'include': '#yate-strings'
+      }
+      {
+        'include': '#yate-strings-single-quoted'
+      }
+    ]
+  'numeric':
+    'match': '\\b\\d+\\b'
+    'name': 'constant.numeric'
+  'operators':
+    'match': '((?<=\\s|\\t|\\))(&&|\\|\\|)(?=\\s|\\t|\\())|((=|!=|==|!==|===|!|/|\\+|%|>|<|>=|<=|\\[|\\]))'
+    'name': 'keyword.operator'
+  'strings':
+    'match': '("|\')([^"\']*)("|\')'
+    'name': 'string'
+  'yate-attributes':
+    'match': '@[a-zA-Z]([a-zA-Z0-9_-]|\\:)*'
+    'name': 'entity.other.attribute-name.html'
+  'yate-inline-strings':
+    'begin': '(?<=>)(?!\\<|$)'
+    'end': '(?=\\<|$)'
+    'name': 'source.yate.inline-string'
+    'patterns': [
+      {
+        'include': '#block-comments'
+      }
+      {
+        'include': '#inline-comments'
+      }
+      {
+        'include': '#inline-expression'
+      }
+      {
+        'match': '([^"\'<>{}/]+)'
+        'name': 'string'
+      }
+      {
+        'match': '(\\{\\{|\\}\\})'
+        'name': 'string'
+      }
+    ]
+  'yate-strings':
+    'begin': '(")'
+    'beginCaptures':
+      '1':
+        'name': 'string'
+    'end': '(\\1)'
+    'endCaptures':
+      '1':
+        'name': 'string'
+    'name': 'source.yate.string'
+    'patterns': [
+      {
+        'include': '#inline-expression'
+      }
+      {
+        'match': '([^"{}])*'
+        'name': 'string'
+      }
+      {
+        'match': '(\\{\\{|\\}\\})'
+        'name': 'string'
+      }
+    ]
+  'yate-strings-single-quoted':
+    'begin': '(\')'
+    'beginCaptures':
+      '1':
+        'name': 'string'
+    'end': '(\\1)'
+    'endCaptures':
+      '1':
+        'name': 'string'
+    'name': 'source.yate.string'
+    'patterns': [
+      {
+        'include': '#inline-expression'
+      }
+      {
+        'match': '([^\'{}])*'
+        'name': 'string'
+      }
+      {
+        'match': '(\\{\\{|\\}\\})'
+        'name': 'string'
+      }
+    ]
+'scopeName': 'source.yate'
