@@ -1,12 +1,11 @@
 {
   "name": "language-yate",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Yate language support for atom",
   "repository": "https://github.com/floatdrop/language-yate",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
